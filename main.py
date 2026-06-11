@@ -2,7 +2,6 @@
 """
 Simple Screenlock UI - Full-screen login screen for Debian/Linux systems
 Locks the screen and requires login credentials to unlock
-Ctrl+Alt+Delete bypasses the login
 """
 
 import tkinter as tk
@@ -10,7 +9,6 @@ from tkinter import messagebox
 import hashlib
 import os
 from pathlib import Path
-from pynput import keyboard
 
 class ScreenLockApp:
     def __init__(self, root):
@@ -30,11 +28,6 @@ class ScreenLockApp:
         
         # Set background
         self.root.configure(bg='#1a1a1a')
-        
-        # Hotkey tracking for Ctrl+Alt+Delete
-        self.keys_pressed = set()
-        self.listener = keyboard.Listener(on_press=self.on_key_press, on_release=self.on_key_release)
-        self.listener.start()
         
         self.create_ui()
         self.load_credentials()
@@ -171,36 +164,7 @@ class ScreenLockApp:
     
     def unlock_screen(self):
         """Unlock the screen and exit"""
-        self.listener.stop()
         self.root.quit()
-    
-    def on_key_press(self, key):
-        """Track key presses for hotkey detection"""
-        try:
-            if key == keyboard.Key.ctrl_l or key == keyboard.Key.ctrl_r:
-                self.keys_pressed.add('ctrl')
-            elif key == keyboard.Key.alt_l or key == keyboard.Key.alt_r:
-                self.keys_pressed.add('alt')
-            elif key == keyboard.Key.delete:
-                self.keys_pressed.add('delete')
-        except AttributeError:
-            pass
-        
-        # Check for Ctrl+Alt+Delete
-        if self.keys_pressed == {'ctrl', 'alt', 'delete'}:
-            self.unlock_screen()
-    
-    def on_key_release(self, key):
-        """Track key releases"""
-        try:
-            if key == keyboard.Key.ctrl_l or key == keyboard.Key.ctrl_r:
-                self.keys_pressed.discard('ctrl')
-            elif key == keyboard.Key.alt_l or key == keyboard.Key.alt_r:
-                self.keys_pressed.discard('alt')
-            elif key == keyboard.Key.delete:
-                self.keys_pressed.discard('delete')
-        except AttributeError:
-            pass
     
     def prevent_close(self):
         """Prevent window from being closed"""

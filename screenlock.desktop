@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=screenlock
+Comment=Lock the screen
+Exec=/home/user/Downloads/py_progs/screenlock/run.sh
+Icon=system-lock
+Terminal=false
+Categories=Utility;

@@ -9,6 +9,7 @@ if ! command -v pyinstaller &> /dev/null; then
     pip install pyinstaller
 fi
 
+#python -m PyInstaller --onefile --windowed --name screenlock main.py
 # Create the executable
 echo "Creating executable..."
 pyinstaller --onefile \
